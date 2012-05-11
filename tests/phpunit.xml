@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<phpunit bootstrap="../src/WURFLExtension/Bootstrap.php" colors="true">
+     <php>
+        <var name="APP_USER"      value="root" />
+        <var name="APP_PASSWORD"  value="vagrant" />
+        <var name="APP_SCHEMA"    value="wurfl" />
+    </php>
+</phpunit>
