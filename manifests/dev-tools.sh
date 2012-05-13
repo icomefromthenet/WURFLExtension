@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Update aptitude.
-apt-get update
+apt-get -q update
 
 # SCM tools & utils.
-apt-get -y install byobu
+apt-get -q -y install byobu
 exit 0;

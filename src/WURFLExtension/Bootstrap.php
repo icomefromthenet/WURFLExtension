@@ -28,8 +28,7 @@ $wurlf_extension_autoloader = new UniversalClassLoader();
 
 $wurlf_extension_autoloader->registerNamespace('Symfony'         , WURFLEXTENSION_VENDOR_DIR);
 $wurlf_extension_autoloader->registerNamespace('WURFLExtension'  , WURFLEXTENSION_CLASS_DIR);
-$wurlf_extension_autoloader->registerPrefix('TeraWurfl'          , WURFLEXTENSION_VENDOR_DIR);
-
+$wurlf_extension_autoloader->useIncludePath(true);
 $wurlf_extension_autoloader->register(); 
 
  
@@ -58,7 +57,7 @@ $di_container['tera_wurfl'] = $di_container->share(function($container){
     # Change the memory limit
     ini_set("memory_limit", '768M');
 
-    $base = new TeraWurfl();
+    $base = new \TeraWurfl();
 
     //if ($base->db->connected !== true) {
       //  throw new Exception("Cannot connect to database: " . $base->db->errors[0]);

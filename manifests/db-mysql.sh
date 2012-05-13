@@ -1,25 +1,15 @@
 #!/bin/bash
 
 # Update aptitude.
-apt-get update
+apt-get -q update
 
 # Install MySQL.
+export DEBIAN_FRONTEND=noninteractive
+apt-get -q -y install mysql-server
+apt-get -q -y install php5-mysql 
+apt-get -q -y install mysql-client
 
-apt-get install expect
-
-VAR=$(expect -c '
-spawn apt-get -y install mysql-server
-expect "New password for the MySQL \"root\" user:"
-send "vagrant\r"
-expect "Repeat password for the MySQL \"root\" user:"
-send "vagrant\r"
-expect eof
-')
-
-echo "$VAR"
-
-apt-get -y install php5-mysql 
-
-#apt-get -y install mysql-client
+# set new root password
+mysqladmin -u root password vagrant
 
 exit 0;

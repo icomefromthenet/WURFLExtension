@@ -66,7 +66,7 @@ Vagrant::Config.run do |config|
     config.vm.provision :shell, :path => "manifests/php5.sh"
     config.vm.provision :shell, :path => "manifests/php5-qa.sh"
     config.vm.provision :shell, :path => "manifests/php5-tools.sh"
-    #config.vm.provision :shell, :path => "manifests/db-mysql.sh"
+    config.vm.provision :shell, :path => "manifests/db-mysql.sh"
     config.vm.provision :shell, :path => "manifests/dev-tools.sh"
     config.vm.provision :shell, :inline => "apt-get -y upgrade"
   end

@@ -1,1 +1,3 @@
 .vagrant
+src/vendor/TeraWurfl/TeraWurflConfig.php
+src/vendor/TerWurfl/data/*

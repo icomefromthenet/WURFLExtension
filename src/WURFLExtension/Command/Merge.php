@@ -26,7 +26,7 @@ class Merge extends Command
 
         
         # Ask for the database type
-        $answers['db_type'] =  strtolower($dialog->ask($output,'Which Database does this belong? [mysql4|mysql5|mssql2005|mongodb]: ','mysql5'));
+        $answers['db_type'] =  strtolower($dialog->ask($output,'Which database does this <info>belong</info>? [mysql4|mysql5|mssql2005|mongodb]: ','mysql5'));
         $connector_options = array(
             'mysql4'    => 'MySQL4',
             'mysql5'    => 'MySQL5',
@@ -41,16 +41,16 @@ class Merge extends Command
         $answers['db_type'] = $connector_options[$answers['db_type']];
         
         # Ask Database Schema Name
-        $answers['db_schema'] =  $dialog->ask($output,'What is the Database schema name? [wurfl] : ','wurfl');
+        $answers['db_schema'] =  $dialog->ask($output,'What is the database <info>schema name</info>? [wurfl] : ','wurfl');
 
         #Database user Name
-        $answers['db_user'] =  $dialog->ask($output,'What is the Database user name? : ');
+        $answers['db_user'] =  $dialog->ask($output,'What is the database <info>username</info>? : ');
 
         #Database user Password
-        $answers['db_password'] =  $dialog->ask($output,'What is the Database users password? : ');
+        $answers['db_password'] =  $dialog->ask($output,'What is the database <info>users password</info>? : ');
 
         #Database host
-        $answers['db_host'] =  $dialog->ask($output,'What is the Database host name? [localhost] : ','localhost');
+        $answers['db_host'] =  $dialog->ask($output,'What is the database <info>host name</info>? [localhost] : ','localhost');
 
         # Store answers for the execute method
         $this->answers = $answers;
@@ -73,38 +73,38 @@ class Merge extends Command
             throw new WURFLExtension('TERAWurfl Config Template not found');
         }
     
-        $output->writeln('<comment>Reading Template config<comment>');
+        $output->writeln('<comment>Reading Template config</comment>');
         $template_content = file_get_contents($rootdir .'/'.$config_template);
     
         #replace the tokens with database config
     
         # host
         $template_content = str_replace('@host@', $this->answers['db_host'], $template_content);
-        $output->writeln('<info>Replace<info> Replacing Host');
+        $output->writeln('<info>++Replace</info> Replacing Host');
     
         # username
         $template_content = str_replace('@username@', $this->answers['db_user'], $template_content);
-        $output->writeln('<info>Replace</info> Replacing Username');
+        $output->writeln('<info>++Replace</info> Replacing Username');
     
     
         # password
         $template_content = str_replace('@password@', $this->answers['db_password'], $template_content);
-        $output->writeln('<info>Replace</info> Replacing Password');
+        $output->writeln('<info>++Replace</info> Replacing Password');
     
     
         # schema
         $template_content = str_replace('@schema@', $this->answers['db_schema'], $template_content);
-        $output->writeln('<info>Replace</info> Replacing Scheam');
+        $output->writeln('<info>++Replace</info> Replacing Scheam');
         
         # connector    
         $template_content = str_replace('@connector@', $this->answers['db_type'], $template_content);
-        $output->writeln('<info>Replace</info> Replacing the connector');
+        $output->writeln('<info>++Replace</info> Replacing the connector');
     
     
         # remove the existsing file
         if(is_file($rootdir .'/'.$config_file_name) === TRUE) {
             unlink($rootdir .'/'.$config_file_name);
-            $output->writeln('<comment>Removed existing config file<comment>');
+            $output->writeln('<comment>Removed existing config file</comment>');
         }
     
         # write file
@@ -112,7 +112,7 @@ class Merge extends Command
             throw new WURFLExtensionException('unable to write new config file');
         }
     
-        $output->writeln('<comment>Finished merge of database config<comment>');
+        $output->writeln('<comment>Finished merge of database config</comment>');
             
         parent::execute($input,$output);
     

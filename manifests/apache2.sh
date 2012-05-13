@@ -1,5 +1,5 @@
 # Install Apache version 2 web server
-apt-get -y install apache2 apache2-doc
+apt-get -q -y install apache2 apache2-doc
 
 # Set local host on apache
 echo "ServerName localhost" | tee /etc/apache2/conf.d/fqdn

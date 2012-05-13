@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Komodo Project File - DO NOT EDIT -->
 <project id="c0b38b04-af6f-4cad-867c-3131a8cafb6e" kpf_version="5" name="WURFL-Extensions.komodoproject">
+<preference-set idref="c0b38b04-af6f-4cad-867c-3131a8cafb6e">
+  <string id="mappedPaths">::file://192.168.0.101/vagrant/bin##file:///home/lewis/Projects/wurfl/bin::file://192.168.0.101/vagrant/src/WURFLExtension##file:///home/lewis/Projects/wurfl/src/WURFLExtension</string>
+</preference-set>
 </project>
