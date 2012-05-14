@@ -1,15 +1,31 @@
 <?php
+namespace WURFLExtension\Tests;
 
-include_once (realpath(__DIR__ .'/../../src/Vendor/TeraWurfl/TeraWurfl.php'));
+use WURFLExtension\Criteria\Basic,
+    WURFLExtension\Container,
+    PHPUnit_Framework_TestCase;
 
 class CriteriaBasicTest extends PHPUnit_Framework_TestCase
 {
 
+    protected $backupGlobalsBlacklist = array('di_container');
+    
+    /**
+      *  @var /WURFLExtension/Container
+      */
+    protected $di;
+    
+
+    public function setUp()
+    {
+        $this->di = new Container();
+    }
+
+
     public function testLookup()
     {
-        $wurfl = $this->getWurfl();
-        $service = new Kernel_Extension_Wurfl_Instance($wurfl);
-        $criteria = new Kernel_Extension_Wurfl_Criteria_Basic();
+        $service = $this->di->getTeraWurflWrapper();
+        $criteria = new Basic();
         
         # Value is false or empty string
         
@@ -31,23 +47,7 @@ class CriteriaBasicTest extends PHPUnit_Framework_TestCase
     
     
     
-    //  -------------------------------------------------------------------------
-    
-    protected $wurfl;    
-    
-    protected function getWurfl()
-    {
-        if($this->wurfl === null) {
-            $this->wurfl = new TeraWurfl();
-        }
   
-        return $this->wurfl;
-    }
-    
-    //  -------------------------------------------------------------------------
 
 }
-/* End of File */
-
-
 /* End of File */

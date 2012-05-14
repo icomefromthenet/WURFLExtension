@@ -30,8 +30,6 @@ $wurlf_extension_autoloader->registerNamespace('Symfony'         , WURFLEXTENSIO
 $wurlf_extension_autoloader->registerNamespace('WURFLExtension'  , WURFLEXTENSION_CLASS_DIR);
 $wurlf_extension_autoloader->useIncludePath(true);
 $wurlf_extension_autoloader->register(); 
-
- 
  
 
 //---------------------------------------------------------------------
@@ -40,45 +38,6 @@ $wurlf_extension_autoloader->register();
 //---------------------------------------------------------------------
 
 $di_container = new Container(); 
-
-
-$di_container['tera_wurfl'] = $di_container->share(function($container){
-
-     #Include Files need for Wurfl
-
-    $TeraWurfl_PATH = WURFLEXTENSION_VENDOR_DIR .'/TeraWurfl/';
-    require_once $TeraWurfl_PATH . 'TeraWurfl.php';
-    require_once $TeraWurfl_PATH . 'TeraWurflLoader.php';
-    require_once $TeraWurfl_PATH . 'TeraWurflXMLParsers/TeraWurflXMLParser.php';
-    require_once $TeraWurfl_PATH . 'TeraWurflXMLParsers/TeraWurflXMLParser_XMLReader.php';
-    require_once $TeraWurfl_PATH . 'TeraWurflXMLParsers/TeraWurflXMLParser_SimpleXML.php';
-
-
-    # Change the memory limit
-    ini_set("memory_limit", '768M');
-
-    $base = new \TeraWurfl();
-
-    //if ($base->db->connected !== true) {
-      //  throw new Exception("Cannot connect to database: " . $base->db->errors[0]);
-    //}
-
-    return $base;
-
-
-});
-
-$di_container['console'] = $di_container->share(function($container){
-    return new \WURFLExtension\Command\Base\Application($container['module']);
-});
-
-$di_container['module']  = $di_container->share(function($container){
-    return new \WURFLExtension\Module($container);
-});
-
-$di_container['tera_wurfl_wrapper'] = $di_container->share(function($container){
-    return new \WURFLExtension\TerraWurflWrapper($container['tera_wurfl']);
-});
 
 //---------------------------------------------------------------------
 // Load The module

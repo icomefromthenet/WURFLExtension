@@ -4,13 +4,18 @@ namespace WURFLExtension\Command;
 use WURFLExtension\Command\Base\Command,
     WURFLExtension\Exception as WURFLExtensionException,
     Symfony\Component\Console\Input\InputInterface,
+    Symfony\Component\Console\Output\OutputInterface,
     Symfony\Component\Console\Input\InputArgument,
-    Symfony\Component\Console\Helper\DialogHelper,
-    Symfony\Component\Console\Output\OutputInterface;
+    \TeraWurflLoader,
+    \TeraWurfl,
+    \WurflSupport,
+    \TeraWurflConfig;
 
 class Stats extends Command
 {
    
+    
+    
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
@@ -28,28 +33,35 @@ class Stats extends Command
             $mergestats = $base->db->getTableStats(TeraWurflConfig::$TABLE_PREFIX . 'Merge');
             $mergestats['bytesize'] = WurflSupport::formatBytes($mergestats['bytesize']);
             
-            $merge = "\n > MERGE
-                    Rows:    {$mergestats['rows']}
-                    Devices: {$mergestats['actual_devices']}
-                    Size:    {$mergestats['bytesize']}\n";
-                    
+            $merge = <<<EOF
+> MERGE
+    Rows:    {$mergestats['rows']}
+    Devices: {$mergestats['actual_devices']}
+    Size:    {$mergestats['bytesize']}
+EOF;
             $index = "";
             $indexstats = $base->db->getTableStats(TeraWurflConfig::$TABLE_PREFIX . 'Index');
             
             if (!empty($indexstats)) {
                 $indexstats['bytesize'] = WurflSupport::formatBytes($indexstats['bytesize']);
                 
-                $index = "\n > INDEX
-                    Rows:    {$indexstats['rows']}
-                    Size:    {$indexstats['bytesize']}\n";
+$index = <<<EOF
+
+> INDEX
+    Rows:    {$indexstats['rows']}
+    Size:    {$indexstats['bytesize']}
+EOF;
             }
             
             $cachestats = $base->db->getTableStats(TeraWurflConfig::$TABLE_PREFIX . 'Cache');
             $cachestats['bytesize'] = WurflSupport::formatBytes($cachestats['bytesize']);
             
-            $cache = "\n > CACHE
-                Rows:    {$cachestats['rows']}
-                Size:    {$cachestats['bytesize']}\n";
+$cache = <<<EOF
+
+> CACHE
+    Rows:    {$cachestats['rows']}
+    Size:    {$cachestats['bytesize']}
+EOF;
             
             $matcherList = $base->db->getMatcherTableList();
             $matchers = array();
@@ -59,13 +71,14 @@ class Stats extends Command
             }
         
 $out = <<<EOF
-        Tera-WURFL $twversion
-        Database Type: $dbtype (ver $dbver)
-        Loaded WURFL: $wurflversion
-        Last Updated: $lastupdated
-        Config File: $config
-        ---------- Table Stats -----------
-        {$merge}{$index}{$cache}
+
+Tera-WURFL $twversion
+Database Type: $dbtype (ver $dbver)
+Loaded WURFL: $wurflversion
+Last Updated: $lastupdated
+Config File: $config
+---------- Table Stats -----------
+{$merge}{$index}{$cache}
 EOF;
         
             $output->writeln($out);

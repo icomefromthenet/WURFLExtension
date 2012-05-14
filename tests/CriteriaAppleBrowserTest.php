@@ -1,15 +1,31 @@
 <?php
+namespace WURFLExtension\Tests;
 
-include_once (realpath(__DIR__ .'/../../src/Vendor/TeraWurfl/TeraWurfl.php'));
+use WURFLExtension\Criteria\AppleBrowser,
+    WURFLExtension\Container,
+    PHPUnit_Framework_TestCase;
 
 class CriteriaAppleBrowserTest extends PHPUnit_Framework_TestCase
 {
+    
+    protected $backupGlobalsBlacklist = array('di_container');
+    
+    /**
+      *  @var /WURFLExtension/Container
+      */
+    protected $di;
+    
+
+    public function setUp()
+    {
+        $this->di = new Container();
+    }
+    
 
     public function testLookup()
     {
-        $wurfl = $this->getWurfl();
-        $service = new Kernel_Extension_Wurfl_Instance($wurfl);
-        $criteria = new Kernel_Extension_Wurfl_Criteria_AppleBrowser();
+        $service = $this->di->getTeraWurflWrapper();
+        $criteria = new AppleBrowser();
         
         # Apple Phone
         $ua = "Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A538a Safari/419.3";
@@ -24,24 +40,6 @@ class CriteriaAppleBrowserTest extends PHPUnit_Framework_TestCase
     }
     
     
-    
-    //  -------------------------------------------------------------------------
-    
-    protected $wurfl;    
-    
-    protected function getWurfl()
-    {
-        if($this->wurfl === null) {
-            $this->wurfl = new TeraWurfl();
-        }
-  
-        return $this->wurfl;
-    }
-    
-    //  -------------------------------------------------------------------------
 
 }
-/* End of File */
-
-
 /* End of File */

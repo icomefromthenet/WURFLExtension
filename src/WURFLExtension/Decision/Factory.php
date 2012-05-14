@@ -1,12 +1,13 @@
 <?php
 namespace WURFLExtension\Decision;
 
-use WURFLExtension\Exception as WURFLExtensionException;
+use WURFLExtension\Exception as WURFLExtensionException,
+    Closure;
 
 class Factory
 {
     
-    public function create($class)
+    public function create($class,Closure $callback)
     {
         if(class_exists($class) === false) {
             throw new WURFLExtensionException('Decision Manager Class Does not exist');
@@ -15,7 +16,7 @@ class Factory
         $criteria  = $class::getCriteria();
         $strategy  = $class::getStrategy();
         
-        return new $class($criteria,$strategy);
+        return new $class($criteria,$strategy,$callback);
     }
     
     

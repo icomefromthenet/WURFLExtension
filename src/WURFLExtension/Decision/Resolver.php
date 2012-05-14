@@ -39,7 +39,7 @@ class Resolver
     {
         foreach($this->decisions as $decision) {
             
-            if($decision->vote($data) === true) {
+            if($decision->tally($data) === true) {
                 
                 # run the callback
                 $decision->run();
@@ -49,7 +49,7 @@ class Resolver
             }
         }
         
-        return true;
+        return false;
     } 
 
     //  -------------------------------------------------------------------------

@@ -87,52 +87,6 @@ class Kernel_Extension_Wurfl_Service
         
     }
     
-    //  -------------------------------------------------------------------------
-    # Search will check the wurfl database for device
-
-    /**
-      *  Search the wurfl for database and dump into session
-      *
-      *  @var string $user_agent to use in the search
-      *  @return Kernel_Extension_Wurfl_Capability
-      */
-    public function search($user_agent)
-    {
-        $data = $this->instance->parse($user_agent);
-        
-        # was data returned
-        
-        if(is_array($data) === false) {
-            throw new Kernel_Extension_Wurfl_Exception('Returned data from Tera Wurfl must be and array');
-        }
-        
-        # load search data into struct 
-        
-        $capability = new Kernel_Extension_Wurfl_Capability($data);
-        
-        # assign seach data into session
-        $this->session->data = $capability;
-         
-        return $this->session->data;
-    }
-
-    //  -------------------------------------------------------------------------
-    # Properties
     
-    /**
-      * Gets the loaded Capability Struct
-      * 
-      * @return Kernel_Extension_Wurfl_Capability 
-      */
-    public function getCapability()
-    {
-        if(isset($this->session->data)  === false) {
-            return null;
-        }
-        
-        return $this->session->data;
-    }
-    
-    //  -------------------------------------------------------------------------
 }
 /* End of File */

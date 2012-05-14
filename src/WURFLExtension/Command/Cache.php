@@ -6,7 +6,11 @@ use WURFLExtension\Command\Base\Command,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Helper\DialogHelper,
-    Symfony\Component\Console\Output\OutputInterface;
+    Symfony\Component\Console\Output\OutputInterface,
+    \TeraWurflLoader,
+    \TeraWurfl,
+    \WurflSupport,
+    \TeraWurflConfig;
 
 class Cache extends Command
 {
@@ -20,7 +24,7 @@ class Cache extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $commend = $input->getArgument('action');
+        $command = $input->getArgument('action');
         $base = $this->getApplication()->getModule()->getContainer()->getTeraWurfl();
       
         if (strtolower($command) === self::CLEAR_ARGUMENT) {

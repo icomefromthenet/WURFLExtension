@@ -6,10 +6,17 @@ use WURFLExtension\Command\Base\Command,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Helper\DialogHelper,
-    Symfony\Component\Console\Output\OutputInterface;
+    Symfony\Component\Console\Output\OutputInterface,
+    \TeraWurflLoader,
+    \TeraWurfl,
+    \WurflSupport,
+    \TeraWurflConfig;
 
 class Install extends Command
 {
+
+    const DATA_DIR = 'data';
+
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -17,12 +24,22 @@ class Install extends Command
            $base = $this->getApplication()->getModule()->getContainer()->getTeraWurfl();
        
            # make data folder write and readable
-           if(chmod($base->rootdir .'data', 0777)) {
-               $output->writeln('<info>chmod<.info> '.$base->rootdir .'data');
+           if(chmod($base->rootdir .self::DATA_DIR, 0777)) {
+               $output->writeln('<info>chmod</info> '.$base->rootdir . self::DATA_DIR);
            }else {
                throw new WURFLExtensionException('Can not make data directory writtable');
            }
               
+           
+           $log_file = $base->rootdir.TeraWurflConfig::$LOG_FILE;
+           
+           # create log file if not found
+           
+           if(is_file($log_file) === false) {
+            touch($log_file);
+            $output->writeln('<info>++File</info> creating Log file');
+           }
+           
            
            $output->writeln('<comment>Starting Installing TERAWurfl</comment>');
            

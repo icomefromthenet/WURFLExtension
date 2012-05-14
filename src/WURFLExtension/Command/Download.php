@@ -7,7 +7,10 @@ use WURFLExtension\Command\Base\Command,
     Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Helper\DialogHelper,
     Symfony\Component\Console\Output\OutputInterface,
-    Symfony\Component\Finder\Finder;
+    Symfony\Component\Finder\Finder,
+    \TeraWurfl,
+    \TeraWurflConfig,
+    \WurflSupport;
 
 class Download extends Command
 {
@@ -56,7 +59,7 @@ class Download extends Command
          
          # download the new WURFL file into the DATADIR
         $download_start = microtime(true);
-        ystem(sprintf("wget -O %s %s",$newfile,$dl_url));
+        system(sprintf("wget -O %s %s",$newfile,$dl_url));
         
         if(is_file($newfile) === FALSE) {
              throw new WURFLExtensionException('unable to download the compressed update file');
@@ -67,7 +70,7 @@ class Download extends Command
         $size = WurflSupport::formatBytes(filesize($newfile));
         $download_rate = WurflSupport::formatBitrate(filesize($newfile), $download_time);
          
-        $output->writeln("<info>done</info> (".pake_excerpt($newfile).": $size) Downloaded in $download_time sec @ $download_rate");
+        $output->writeln("<info>done</info> (".$newfile.": $size) Downloaded in $download_time sec @ $download_rate");
          
         # check if we need to uncompress the file.
         if(is_file($newfile) === true) {

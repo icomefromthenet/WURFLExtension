@@ -12,4 +12,6 @@ apt-get -q -y install mysql-client
 # set new root password
 mysqladmin -u root password vagrant
 
+mysql -h localhost -u root -pvagrant <<< 'CREATE SCHEMA wurfl;'
+
 exit 0;

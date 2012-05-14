@@ -98,7 +98,7 @@ class TeraWurflConfig{
 	 * Filename of Log File (found in DATADIR; default: wurfl.log)
 	 * @var String
 	 */
-	public static $LOG_FILE = '../../../Tmp/Log/wurfl.log';
+	public static $LOG_FILE = 'data/wurfl.log';
 	/**
 	 * Log Level as defined by PHP Constants LOG_ERR, LOG_WARNING and LOG_NOTICE.
 	 * Should be changed to LOG_WARNING or LOG_ERR for production sites

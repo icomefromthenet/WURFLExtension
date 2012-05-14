@@ -1,18 +1,26 @@
 <?php
+namespace WURFLExtension\Tests;
+
+use WURFLExtension\Container,
+    WURFLExtension\Strategy\Consensus,
+    PHPUnit_Framework_TestCase;
 
 class DecisionConsensusTest extends PHPUnit_Framework_TestCase
 {
+    protected $backupGlobalsBlacklist = array('di_container');
+    
+    
     public function testNewDecision()
     {
-        $decision = new Kernel_Extension_Wurfl_Strategy_Consensus();
+        $decision = new Consensus();
         
-        $this->assertInstanceOf('Kernel_Extension_Wurfl_StrategyInterface',$decision);
+        $this->assertInstanceOf('\WURFLExtension\StrategyInterface',$decision);
         
     }
 
     public function testAffirmative()
     {
-        $decision = new Kernel_Extension_Wurfl_Strategy_Consensus();
+        $decision = new Consensus();
         $data = array(true,true);
         $this->assertTrue($decision->decide($data));
         
@@ -27,7 +35,7 @@ class DecisionConsensusTest extends PHPUnit_Framework_TestCase
     
     public function testNegative()
     {
-        $decision = new Kernel_Extension_Wurfl_Strategy_Consensus();
+        $decision = new Consensus();
         $data = array(false,false);
         $this->assertFalse($decision->decide($data));
         
@@ -41,7 +49,7 @@ class DecisionConsensusTest extends PHPUnit_Framework_TestCase
     
     public function testTie()
     {
-        $decision = new Kernel_Extension_Wurfl_Strategy_Consensus();
+        $decision = new Consensus();
         $data = array(true,true,false,false);
         $this->assertTrue($decision->decide($data));
         

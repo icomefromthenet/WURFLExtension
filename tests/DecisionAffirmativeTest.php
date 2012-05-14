@@ -1,20 +1,29 @@
 <?php
+namespace WURFLExtension\Tests;
+
+use WURFLExtension\Container,
+    WURFLExtension\Strategy\Affirmative,
+    PHPUnit_Framework_TestCase;
 
 class DecisionAffirmativeTest extends PHPUnit_Framework_TestCase
 {
 
+    protected $backupGlobalsBlacklist = array('di_container');
+    
+
+
     public function testNewDecision()
     {
-        $decision = new Kernel_Extension_Wurfl_Strategy_Affirmative();
+        $decision = new Affirmative();
         
-        $this->assertInstanceOf('Kernel_Extension_Wurfl_StrategyInterface',$decision);
+        $this->assertInstanceOf('\WURFLExtension\StrategyInterface',$decision);
         
     }
 
     
     public function testAffirmative()
     {
-        $decision = new Kernel_Extension_Wurfl_Strategy_Affirmative();
+        $decision = new Affirmative();
         $data = array(false,false,true);
         $this->assertTrue($decision->decide($data));
         
@@ -31,7 +40,7 @@ class DecisionAffirmativeTest extends PHPUnit_Framework_TestCase
     
     public function testNegative()
     {
-        $decision = new Kernel_Extension_Wurfl_Strategy_Affirmative();
+        $decision = new Affirmative();
         $data = array(false);
         $this->assertFalse($decision->decide($data));
         

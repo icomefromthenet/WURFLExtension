@@ -3,7 +3,7 @@ namespace WURFLExtension\Criteria;
 
 use WURFLExtension\VoterInterface;
 
-class AndroidBrowser implements Kernel_Extension_Wurfl_VoterInterface
+class AndroidBrowser implements VoterInterface
 {
     
     /**

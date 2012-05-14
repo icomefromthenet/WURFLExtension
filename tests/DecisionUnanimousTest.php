@@ -1,20 +1,28 @@
 <?php
+namespace WURFLExtension\Tests;
+
+use WURFLExtension\Container,
+    WURFLExtension\Strategy\Unanimous,
+    PHPUnit_Framework_TestCase;
 
 class DecisionUnanimousTest extends PHPUnit_Framework_TestCase
 {
     
+    protected $backupGlobalsBlacklist = array('di_container');
+    
+    
     public function testNewObject()
     {
-        $decision = new Kernel_Extension_Wurfl_Strategy_Unanimous();    
+        $decision = new Unanimous();    
         
-        $this->assertInstanceOf('Kernel_Extension_Wurfl_StrategyInterface',$decision);
+        $this->assertInstanceOf('WURFLExtension\StrategyInterface',$decision);
         
     }
     
     
     public function testAffirmative()
     {
-        $decision = new Kernel_Extension_Wurfl_Strategy_Unanimous();    
+        $decision = new Unanimous();    
 
         $data = array(true,true,true);
         $this->assertTrue($decision->decide($data));
@@ -27,7 +35,7 @@ class DecisionUnanimousTest extends PHPUnit_Framework_TestCase
     
     public function testNegative()
     {
-        $decision = new Kernel_Extension_Wurfl_Strategy_Unanimous();    
+        $decision = new Unanimous();    
         $data = array(false);
         $this->assertFalse($decision->decide($data));
         

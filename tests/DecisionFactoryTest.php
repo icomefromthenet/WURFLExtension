@@ -1,27 +1,31 @@
 <?php
+namespace WURFLExtension\Tests;
+
+use WURFLExtension\Decision\Factory,
+    PHPUnit_Framework_TestCase;
 
 class DecisionFactoryTest extends PHPUnit_Framework_TestCase
 {
+    
+    protected $backupGlobalsBlacklist = array('di_container');
+    
 
     public function testNewFactory()
     {
-        $factory = new Kernel_Extension_Wurfl_DecisionFactory();
-        
-        $this->assertInstanceOf('Kernel_Extension_Wurfl_DecisionFactory',$factory);
-        
+        $factory = new Factory();
+        $this->assertInstanceOf('\WURFLExtension\Decision\Factory',$factory);
     }
     
     /**
-      * @expectedException Kernel_Extension_Wurfl_Exception
+      * @expectedException \WURFLExtension\Exception
       * @expectedExceptionMessage Decision Manager Class Does not exist
       */
     public function testFactoryInvaildClass()
     {
         
-       $factory = new Kernel_Extension_Wurfl_DecisionFactory();
+       $factory = new Factory();
        $class = "ReallyWrongClass";  
-        
-        $factory->create($class);
+       $factory->create($class,function(){});
         
     }
     
@@ -29,13 +33,14 @@ class DecisionFactoryTest extends PHPUnit_Framework_TestCase
     public function testFactoryValidClass()
     {
         $criteria = array();
-        $class_name = 'Kernel_Extension_Wurfl_Decision_Test';
-        $strategy = $this->getMockBuilder('Kernel_Extension_Wurfl_StrategyInterface')
+        $class_name = 'MockDecision';
+        
+        $strategy = $this->getMockBuilder('\WURFLExtension\StrategyInterface')
                          ->setMethods(array('decide'))
                          ->getMock();
    
     
-        $mock = $this->getMockBuilder('Kernel_Extension_Wurfl_DecisionManager')
+        $mock = $this->getMockBuilder('\WURFLExtension\Decision\Decision')
                      ->setMockClassName($class_name)
                      ->disableOriginalConstructor()
                      ->getMock();
@@ -48,9 +53,9 @@ class DecisionFactoryTest extends PHPUnit_Framework_TestCase
               ->method('getCriteria')
               ->will($this->returnValue($criteria));
         
-       $factory = new Kernel_Extension_Wurfl_DecisionFactory();
+       $factory = new Factory();
         
-       $factory->create($class_name);
+       $factory->create($class_name,function(){});
         
     }
 

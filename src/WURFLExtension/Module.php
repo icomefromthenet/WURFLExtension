@@ -1,6 +1,10 @@
 <?php
 namespace WURFLExtension;
 
+use WURFLExtension\Exception as WURFLExtensionException,
+    WURFLExtension\Container,
+    WURFLExtension\Capability,
+    WURFLExtension\Decision\Resolver;
 
 class Module
 {
@@ -36,36 +40,65 @@ class Module
     }
     
     
-    
-    
-    
-    
-    
-    
-    # Build Resolver
+    //  -------------------------------------------------------------------------
+    # Search will check the wurfl database for device
 
-    public function createResolver()
+    /**
+      *  Search the wurfl for database and dump into session
+      *
+      *  @var string $user_agent to use in the search
+      *  @return Kernel_Extension_Wurfl_Capability
+      */
+    public function search($user_agent)
     {
-        $instanced_managers = array();
+        $data = $this->container->getTeraWurflWrapper()->parse($user_agent);
         
-        # check for decision classes from the config folder
-        $managers = $this->getConfig()->get('theme.wurfl_decision_managers',null);
+        # was data returned
         
-        
-        # make sure been set as an array or loop below will fail
-        
-        if($managers !== null) {
-            # instance the managers using the factory
-            
-            foreach($managers as $manager) {
-                $instanced_managers[] = $this->getDecisionFactory()->create($manager);
-            }
+        if(is_array($data) === false) {
+            throw new WURFLExtensionException('Returned data from Tera Wurfl must be and array');
         }
+        
+        # load search data into struct 
+        
+        return new Capability($data);
+        
+    }
 
-        # return the new resolver
-        return new Kernel_Extension_Wurfl_Resolver($instanced_managers);
+    //  -------------------------------------------------------------------------
+    
+    /**
+      *  Will make a decision using a decision resolver.
+      *
+      *  @param Resolver $decision
+      *  @param String $user_agent
+      */
+    public function decide(Resolver $decision,$user_agent)
+    {
+        return $decision->resolve($this->search($user_agent)->toArray());
     }
     
+    //  -------------------------------------------------------------------------
+    
+    
+    /**
+      *   Turn array of decisions/callbacks into a resolver
+      *
+      *   @param mixed[] array of 'decision_class_name' => Closure
+      *   @return Resolver
+      */
+    public function build(array $decisions)
+    {
+        $decide = array();
+        
+        foreach($decisions as $name => $closure) {
+            $decide[] = $this->container->getDecisionFactory()->create($name,$closure);
+        }
+        
+        return new Resolver($decide);
+    }
+    
+    //  -------------------------------------------------------------------------
     
 }
 /* End of File */

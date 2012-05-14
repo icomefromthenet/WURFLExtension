@@ -4,7 +4,7 @@ namespace WURFLExtension\Decision;
 use Closure,
     WURFLExtension\Exception as WURFLExtensionException,
     WURFLExtension\StrategyInterface,
-    WURFLExtension\VoterInterface,
+    WURFLExtension\VoterInterface;
 
 class Decision
 {
@@ -45,7 +45,7 @@ class Decision
       *  @param array the wurfl device capabilities array
       *  @return boolean true if decision was in the affirmative
       */
-    public function vote(array $data)
+    public function tally(array $data)
     {
         
         $results = array();

@@ -1,16 +1,33 @@
 <?php
 namespace WURFLExtension\Tests;
 
-use WURFLExtension\Criteria\AndroidBrowser;
+use WURFLExtension\Criteria\AndroidBrowser,
+    WURFLExtension\Container,
+    PHPUnit_Framework_TestCase;
+
 
 class CriteriaAndroidBrowserTest extends PHPUnit_Framework_TestCase
 {
 
+    protected $backupGlobalsBlacklist = array('di_container');
+    
+    /**
+      *  @var /WURFLExtension/Container
+      */
+    protected $di;
+    
+
+    public function setUp()
+    {
+        $this->di = new Container();
+    }
+    
+
     public function testLookup()
     {
-        $wurfl = $this->getWurfl();
-        $service = new Kernel_Extension_Wurfl_Instance($wurfl);
-        $criteria = new Kernel_Extension_Wurfl_Criteria_AndroidBrowser();
+        
+        $service = $this->di->getTeraWurflWrapper();
+        $criteria = new AndroidBrowser();
         
         # Apple Phone
         
@@ -29,25 +46,5 @@ class CriteriaAndroidBrowserTest extends PHPUnit_Framework_TestCase
         
     }
     
-    
-    
-    //  -------------------------------------------------------------------------
-    
-    protected $wurfl;    
-    
-    protected function getWurfl()
-    {
-        if($this->wurfl === null) {
-            $this->wurfl = new TeraWurfl();
-        }
-  
-        return $this->wurfl;
-    }
-    
-    //  -------------------------------------------------------------------------
-
 }
-/* End of File */
-
-
 /* End of File */

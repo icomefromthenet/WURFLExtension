@@ -6,7 +6,12 @@ use WURFLExtension\Command\Base\Command,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Helper\DialogHelper,
-    Symfony\Component\Console\Output\OutputInterface;
+    Symfony\Component\Console\Output\OutputInterface,
+    \TeraWurflLoader,
+    \TeraWurfl,
+    \WurflSupport,
+    \TeraWurflConfig,
+    \UserAgentFactory;
 
 class Debug extends Command
 {
@@ -28,7 +33,7 @@ class Debug extends Command
         $base = $this->getApplication()->getModule()->getContainer()->getTeraWurfl();
         $command = $input->getArgument('action');
         $file_argument = $input->getArgument('file');
-        $quiet = $this->getOption('verbose');
+        $quiet = $input->getOption('verbose');
         
         $output->writeLn('Running Debug');
             
@@ -41,18 +46,28 @@ class Debug extends Command
                         
                         $file = $base->rootdir . "UserAgentMatchers/{$matcherClass}.php";
                         
-                        $output->writeLn('<info>inc</info> '.$file);
-                        
                         require_once($file);
+
+                        $matcherClass = '\\'.$matcherClass;
+                        $ids = $matcherClass::$constantIDs;
                         
-                        $ids = $matcherClass->$constantIDs;
                         
-                        if (empty($ids)) {
-                            continue;
+                        # Skip over empties
+                        if(empty($ids) === false) {
+                            # print the matcher class name.
+                            
+                            $output->writeLn('<comment>'.$matcher . "UserAgentMatcher".'</comment>');
+                            # print the path to the file                        
+                            $output->writeLn('<info>inc</info> '.$file);
+                                                        
+                            # ouput the device list
+                            foreach($ids as $an_id) {
+                                $output->writeLn('<info>Device ID:</info> '.$an_id);    
+                            }
+                            
+                            $output->writeLn('');    
                         }
                         
-                        $output->writeLn('<comment>'.$matcherClass.'</comment>');
-                        $output->writeLn(implode("\n\t", $ids));
                     }
                     
                     break;
@@ -65,15 +80,15 @@ class Debug extends Command
                         $matcherClass = $matcher . "UserAgentMatcher";
                         $file = $base->rootdir . "UserAgentMatchers/{$matcherClass}.php";
                         require_once($file);
-                        $ids = array_merge($ids, $matcherClass->$constantIDs);
+                        $matcherClass = '\\'.$matcherClass; 
+                    
+                        $ids = array_merge($ids, $matcherClass::$constantIDs);
                     }
                     
+                    $output->writeLn('<info>Unique Device Id\'s</info>');
                     $ids = array_unique($ids);
-                    
                     sort($ids);
-                    
                     $output->writeLn(implode("\n", $ids));
-                    
                     break;
                 case "createProcs":
                     
@@ -151,7 +166,7 @@ class Debug extends Command
                     break;
                     
                   default:
-                        throw new WURFLExtensionException('Action for argument::'.$arguments[0].' not found');
+                        throw new WURFLExtensionException('Action for argument::'.$command.' not found');
                   break;    
             }
     
